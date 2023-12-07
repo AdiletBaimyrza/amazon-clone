@@ -1,5 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HomePage, NavBar } from "./components";
+import {
+  HomePage,
+  NavBar,
+  Checkout,
+  SearchResults,
+  ProductPage,
+} from "./components";
 
 import "./tailwind.css";
 
@@ -9,6 +15,9 @@ const App = () => {
       <NavBar />
       <Routes>
         <Route exact path="/" element={<HomePage />} />
+        <Route path="/search" element={<SearchResults />} />
+        <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </BrowserRouter>
   );
