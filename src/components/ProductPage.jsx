@@ -3,15 +3,24 @@ import { useState, useEffect } from "react";
 import { callAPI } from "../utils/CallApi";
 import ProductDetails from "./ProductDetails";
 import { GB_CURRENCY } from "../utils/constants";
+import { addToCart } from "../redux/cartSlice";
+import { useDispatch } from "react-redux";
 
 const ProductPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState("1");
+  const dispatch = useDispatch();
 
   const getProduct = () => {
     callAPI(`data/products.json`).then((productResults) => {
       setProduct(productResults[id]);
     });
+  };
+
+  const addQuantityToProduct = () => {
+    setProduct((product.quantity = quantity));
+    return product;
   };
 
   useEffect(() => {
@@ -57,13 +66,23 @@ const ProductPage = () => {
               </div>
               <div className="text-base xl:text-lg mt-1">
                 Quantity:{" "}
-                <select className="p-2 bg-white rounded-md border focus:border-indigo-600">
+                <select
+                  className="p-2 bg-white rounded-md border focus:border-indigo-600"
+                  onChange={(event) => {
+                    setQuantity(event.target.value);
+                  }}
+                >
                   <option>1</option>
                   <option>2</option>
                   <option>3</option>
                 </select>
               </div>
-              <button className="bg-yellow-400 w-full p-3 mt-3 text-xs xl:text-sm rounded hover:bg-yellow-500">
+              <button
+                className="bg-yellow-400 w-full p-3 mt-3 text-xs xl:text-sm rounded hover:bg-yellow-500"
+                onClick={() => {
+                  dispatch(addToCart(addQuantityToProduct()));
+                }}
+              >
                 Add to Cart
               </button>
             </div>
